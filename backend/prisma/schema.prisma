@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  orders    Order[]
+}
+
+model MenuItem {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  category    String
+  image       String?
+
+  orderItems  OrderItem[]
+}
+
+model Topping {
+  id     Int    @id @default(autoincrement())
+  name   String
+  price  Float
+  image  String
+
+  orderItemToppings OrderItemTopping[]   // relation
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  total     Float
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+}
+
+model OrderItem {
+  id         Int  @id @default(autoincrement())
+  orderId    Int
+  menuItemId Int
+  quantity   Int
+
+  order      Order    @relation(fields: [orderId], references: [id])
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+
+  toppings   OrderItemTopping[]   // relation
+}
+
+model OrderItemTopping {
+  id          Int @id @default(autoincrement())
+  orderItemId Int
+  toppingId   Int
+
+  orderItem   OrderItem @relation(fields: [orderItemId], references: [id])
+  topping     Topping   @relation(fields: [toppingId], references: [id])
+}
