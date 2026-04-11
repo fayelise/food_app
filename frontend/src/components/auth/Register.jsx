@@ -33,7 +33,8 @@ const Register = () => {
       const data = await response.json();
       if (response.ok) {
         setMessage({message: "Registration successful", type:"success"});
-        navigate("/login");
+        setTimeout(() => {
+          navigate("/login");}, 2000);
       } else {
         setMessage({message: data.error, type:"error"});
       }

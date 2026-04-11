@@ -5,7 +5,8 @@ import jwt from "jsonwebtoken";
 export const register = async (req, res) => {
   const { email, password } = req.body;
 
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+  // const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailRegex.test(email)) return res.status(400).json({ error: "Invalid email" });
 
   if (typeof password !== "string" || password.length < 6)
@@ -25,7 +26,8 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+  // const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailRegex.test(email)) return res.status(400).json({ error: "Invalid email" });
 
   const user = await prisma.user.findUnique({ where: { email } });

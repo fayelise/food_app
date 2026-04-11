@@ -35,9 +35,10 @@ const HandleLogin = async() => {
     const data = await response.json();
     if (response.ok) {
       setToken(data.token);
-      setUser(data.user || {id: data.id, email: data.email}); // set user state directly
+      setUser(data.user || {id: data.id, email: data.email}); 
       setMessage({message: "Login successful", type:"success"});
-      navigate("/dashboard");
+      setTimeout(() => {
+        navigate("/dashboard");}, 2000);
     } else {
       setMessage({message: data.error, type:"error"});
     }

@@ -6,33 +6,12 @@ import Popup from "../ui/Popup.jsx";
 import { useState } from "react";
 
 const DAKAR_DEPARTMENTS = {
-  Dakar: [
-    "Plateau",
-    "Médina",
-    "Fann-Point E-Amitié",
-    "Gueule Tapée-Fass-Colobane",
-    "Grand Dakar",
-    "Parcelles Assainies",
-    "HLM",
-    "Ngor",
-    "Ouakam",
-    "Yoff",
-    "Mermoz-Sacré-Cœur",
-    "Liberté",
-    "Dieuppeul-Derklé"
-  ],
-  Pikine: [
-    "Pikine Est",
-    "Pikine Ouest",
-    "Pikine Nord",
-    "Dagoudane Pikine",
-    "Thiaroye",
-    "Diamaguène Sicap Mbao",
-    "Mbao"
-  ],
+  Dakar: ["Plateau", "Médina", "Fann-Point E-Amitié", "Gueule Tapée-Fass-Colobane", "Grand Dakar", "Parcelles Assainies", "HLM", "Ngor", "Ouakam", "Yoff", "Mermoz-Sacré-Cœur", "Liberté", "Dieuppeul-Derklé"],
+  Pikine: ["Pikine Est", "Pikine Ouest", "Pikine Nord", "Dagoudane Pikine", "Thiaroye", "Diamaguène Sicap Mbao", "Mbao"],
   Rufisque: ["Rufisque Est", "Rufisque Ouest", "Rufisque Nord", "Bargny", "Sendou", "Sébikotane"],
   Guediawaye: ["Golf Sud", "Médina Gounass", "Ndiarème Limamoulaye", "Sam Notaire", "Wakhinane Nimzatt"]
 };
+
 
 const Cart = () => {
   const { cart, increaseQty, decreaseQty, removeItem, clearCart } = useCart();
@@ -100,14 +79,14 @@ const handleOrder = async () => {
 
       setTimeout(() => {
         setOrderMessage(false);
-      }, 3000);
+      }, 5000);
     };
 
 
   return (
     <div className="max-w-3xl mx-auto py-10 flex flex-col items-center">
-        <div className="w-full border-b border-gray-200 mb-6 shadow-md p-4 rounded-xl">
-            <h1 className="text-3xl font-bold mb-6 text-center text-[#FF1212]">Cart</h1>
+        <div className="w-full border-b border-gray-200 mb-6 shadow-lg shadow-xl shadow-cyan-500/50 p-4 rounded-xl">
+            <h1 className="text-3xl font-bold mb-6 text-center text-[#FF1212]">Your Cart</h1>
            {cart.map((item, index) => (
             <div key={index} className="border p-4 rounded-xl mb-4 flex gap-4">
                 <img src={`${API_URL}${item?.image}`} className="w-20 h-20 object-cover rounded" />
@@ -116,9 +95,8 @@ const handleOrder = async () => {
                     {item.toppings && item.toppings.length > 0 && (
                       <div className="text-xs text-gray-500 mt-1">
                         Toppings: {item.toppings.map((t) => t.name).join(", ")}
-                      </div>
-                    )}
-                    <div className="flex items-center gap-3 mt-2">
+                      </div> )}
+                    <div className="flex items-center gap-3 mt-2 bg-[#FF1212] text-white w-max px-3 py-1 rounded">
                     <button onClick={() => decreaseQty(index)}>-</button>
                     <span>{item.quantity}</span>
                     <button onClick={() => increaseQty(index)}>+</button>
@@ -126,8 +104,7 @@ const handleOrder = async () => {
                 </div>
                 <button onClick={() => removeItem(index)} className="text-red-500"><FaRegTrashAlt />
                 </button>
-            </div>
-           ))}
+            </div>))}
           <div className="flex items-center justify-center">
             <button onClick={() => setIsModalOpen(true)} className={cart.length === 0 ? "bg-gray-400 text-white px-4 py-2 rounded-md cursor-not-allowed" : "bg-[#FF1212] text-white px-4 py-2 rounded-md"} disabled={cart.length === 0}>Checkout</button>
           </div>
@@ -138,21 +115,14 @@ const handleOrder = async () => {
                   setNeighborhood("");}} className="border border-gray-300 px-4 py-2 rounded-md w-full">
                 <option value="" disabled>Choose your department</option>
                 {Object.keys(DAKAR_DEPARTMENTS).map((dep) => (
-                  <option key={dep} value={dep}>
-                    {dep}
-                  </option>
-                ))}
+                  <option key={dep} value={dep}>{dep}</option>))}
               </select>
 
               <select value={neighborhood} onChange={(e) => setNeighborhood(e.target.value)}
                 disabled={!department}className="border border-gray-300 px-4 py-2 rounded-md w-full disabled:bg-gray-100 disabled:text-gray-500">
                 <option value="" disabled> {department ? "Choose your neighborhood" : "Select a department first"}
                 </option>
-                {(DAKAR_DEPARTMENTS[department] || []).map((n) => (
-                  <option key={n} value={n}>
-                    {n}
-                  </option>
-                ))}
+                {(DAKAR_DEPARTMENTS[department] || []).map((n) => (<option key={n} value={n}>{n}</option>))}
               </select>
 
               <input
